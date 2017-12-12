@@ -122,8 +122,12 @@ def clean_slate(use_new_keys=False):
   for vin in KNOWN_VINS:
     director_service_instance.add_new_vehicle(vin)
   
-  # Unload private root key from Director instance after creating demo Director instance
+  # Unload all private rootkeys from ariable, Director instance and director_service_instance in each vehicle repo
+  key_dirroot_pri = None
   director_service_instance.key_dirroot_pri = None
+  for vin in director_service_instance.vehicle_repositories:
+    repository = director_service_instance.vehicle_repositories[vin]
+    repository.root.unload_signing_key()
 
   # You can tell the Director about ECUs this way:
   # test_ecu_public_key = demo.import_public_key('secondary')
