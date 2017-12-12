@@ -64,6 +64,7 @@ uptane.DEMO_MODE = True
 LOG_PREFIX = uptane.TEAL_BG + 'Director:' + ENDCOLORS + ' '
 
 KNOWN_VINS = ['111', '112', '113', 'democar']
+OFFLINE_PRIVATEKEY_FILE = os.path.join(uptane.WORKING_DIR, 'director_privatekey')
 
 # Dynamic global objects
 #repo = None
@@ -96,14 +97,13 @@ def clean_slate(use_new_keys=False):
     demo.generate_key('director') # targets
 
   key_dirroot_pub = demo.import_public_key('directorroot')
-  key_dirroot_pri = demo.import_private_key('directorroot')
+  key_dirroot_pri = rt.import_ed25519_privatekey_from_file(OFFLINE_PRIVATEKEY_FILE, password='pw')
   key_dirtime_pub = demo.import_public_key('directortimestamp')
   key_dirtime_pri = demo.import_private_key('directortimestamp')
   key_dirsnap_pub = demo.import_public_key('directorsnapshot')
   key_dirsnap_pri = demo.import_private_key('directorsnapshot')
   key_dirtarg_pub = demo.import_public_key('director')
   key_dirtarg_pri = demo.import_private_key('director')
-
 
   print(LOG_PREFIX + 'Initializing vehicle repositories')
 
@@ -118,6 +118,9 @@ def clean_slate(use_new_keys=False):
       key_snapshot_pub=key_dirsnap_pub,
       key_targets_pri=key_dirtarg_pri,
       key_targets_pub=key_dirtarg_pub)
+
+  # Unload private root key from Director instance after creating demo Director instance
+  director_service_instance.key_dirroot_pri = None
 
   for vin in KNOWN_VINS:
     director_service_instance.add_new_vehicle(vin)
