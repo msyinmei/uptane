@@ -119,11 +119,11 @@ def clean_slate(use_new_keys=False):
       key_targets_pri=key_dirtarg_pri,
       key_targets_pub=key_dirtarg_pub)
 
-  # Unload private root key from Director instance after creating demo Director instance
-  director_service_instance.key_dirroot_pri = None
-
   for vin in KNOWN_VINS:
     director_service_instance.add_new_vehicle(vin)
+  
+  # Unload private root key from Director instance after creating demo Director instance
+  director_service_instance.key_dirroot_pri = None
 
   # You can tell the Director about ECUs this way:
   # test_ecu_public_key = demo.import_public_key('secondary')
