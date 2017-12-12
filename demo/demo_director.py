@@ -64,7 +64,7 @@ uptane.DEMO_MODE = True
 LOG_PREFIX = uptane.TEAL_BG + 'Director:' + ENDCOLORS + ' '
 
 KNOWN_VINS = ['111', '112', '113', 'democar']
-OFFLINE_PRIVATEKEY_FILE = os.path.join(uptane.WORKING_DIR, 'director_privatekey')
+OFFLINE_PRIVATEKEY_FILE = os.path.join(uptane.WORKING_DIR, 'director_privatekey_offline')
 
 # Dynamic global objects
 #repo = None
